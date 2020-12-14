@@ -4,6 +4,7 @@ import antd from 'ant-design-vue'
 import VueRouter from 'vue-router'
 import 'regenerator-runtime/runtime';
 import NProgress from 'nprogress';
+import "@/icons/index.js";
 import  router  from './router/index'
 import 'ant-design-vue/dist/antd.css'
 Vue.config.productionTip = false;

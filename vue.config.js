@@ -1,7 +1,11 @@
 const path = require("path");
+// const { config } = require("vue/types/umd");
 const webpack = require("webpack");
 const resolve = dir => path.join(__dirname, dir);
-const IS_PROD = ["production", "prod"].includes(process.env.NODE_ENV);
+const IS_PROD = ["production", "prod"].includes(process.env.NODE_ENV); //本地还是生产的判断
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin; //分析插件
+const CompressionWebpackPlugin = require("compression-webpack-plugin");//gzip插件
+const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i;//gzip的压缩类型匹配
 /*
     解压插件测试
     开始
@@ -35,26 +39,40 @@ const IS_PROD = ["production", "prod"].includes(process.env.NODE_ENV);
     结束
 */
 module.exports = {
-    publicPath:'/',
-//   publicPath: IS_PROD ? process.env.VUE_APP_PUBLIC_PATH : "./", // 默认'/'，部署应用包时的基本 URL
-  // outputDir: process.env.outputDir || 'dist', // 'dist', 生产环境构建文件的目录
-  // assetsDir: "", // 相对于outputDir的静态资源(js、css、img、fonts)目录
-//   runtimeCompiler: true, // 是否使用包含运行时编译器的 Vue 构建版本
+    // publicPath:'/',
+  publicPath: IS_PROD ? process.env.VUE_APP_PUBLIC_PATH : "./", // 默认'/'，部署应用包时的基本 URL
+  outputDir: process.env.outputDir || 'dist', // 'dist', 生产环境构建文件的目录
+  assetsDir: "", // 相对于outputDir的静态资源(js、css、img、fonts)目录
+  runtimeCompiler: true, // 是否使用包含运行时编译器的 Vue 构建版本
   productionSourceMap: !IS_PROD, // 生产环境的 source map
   chainWebpack: config => {
+          // config.resolve.alias.set('@ant-design/icons/lib/dist$',path.resolve(__dirname, './src/tools/icons.js'))
     // 添加别名
     config.resolve.alias
       .set("vue$", "vue/dist/vue.esm.js")
       .set("@", resolve("src"))
       .set("@assets", resolve("src/assets"))
-      .set("@scss", resolve("src/assets/scss"))
       .set("@components", resolve("src/components"))
-      // .set("@plugins", resolve("src/plugins"))
       .set("@views", resolve("src/views"))
       .set("@router", resolve("src/router"))
       .set("@store", resolve("src/store"))
-      .set("@layouts", resolve("src/layouts"))
+      // .set("@layouts", resolve("src/layouts"))
       // .set("@static", resolve("src/static"));
+      //将svg进行组件化处理,现将组件库或者svg的文件引入进来，通过svg-sprite-loader插件来处理，
+      const svgRule = config.module.rule("svg");
+      svgRule.uses.clear();
+      svgRule.exclude.add(/node_modules/);
+      svgRule
+        .test(/\.svg$/)
+        .use("svg-sprite-loader")
+        .loader("svg-sprite-loader")
+        .options({
+          symbolId: "icon-[name]"
+        });
+  
+      const imagesRule = config.module.rule("images");
+      imagesRule.exclude.add(resolve("src/icons"));
+      config.module.rule("images").test(/\.(png|jpe?g|gif|svg)(\?.*)?$/);
     // 图片压缩的插件
       if (IS_PROD) {
         config.module
@@ -69,6 +87,12 @@ module.exports = {
             // webp: { quality: 75 }
           });
       }
+      //分析插件
+      if (IS_PROD) {
+        config
+          .plugin('webpack-bundle-analyzer')
+          .use(BundleAnalyzerPlugin);
+      }
       //Moment 会有多国语言 这里我们只保留中文，会减少体积 其实这个并不是最优的解决方案，在网上有个day.js很小满足Moment所有API
       config
       .plugin('ContextReplacementPlugin')
@@ -80,6 +104,16 @@ module.exports = {
         '@ant-design/icons/lib/dist$': path.resolve(__dirname, './src/tools/icons.js'),
       },
     },
+      //开启gzip压缩
+    plugins:[
+      new CompressionWebpackPlugin({
+          // filename: "[path].gz[query]",
+          algorithm: 'gzip',
+          test: productionGzipExtensions,
+          threshold: 10240,
+          deleteOriginalAssets: false
+      })
+    ]
   },
 //代理设置
 devServer: {
