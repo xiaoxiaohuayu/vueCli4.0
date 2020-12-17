@@ -180,7 +180,7 @@ const permission = {
 //   }
   export default {
     debounce,
-    // LazyLoad,
+    LazyLoad,
     permission
   }
   
