@@ -5,6 +5,7 @@ import VueRouter from 'vue-router'
 import 'regenerator-runtime/runtime';
 import NProgress from 'nprogress';
 import "@/icons/index.js";
+import directiveList  from "@/tools/instructions.js";
 import  router  from './router/index'
 import 'ant-design-vue/dist/antd.css'
 Vue.config.productionTip = false;
@@ -12,13 +13,12 @@ Vue.config.productionTip = false;
 import vhCheck from 'vh-check';
 //解决移动端浏览器100vh高度不一致你以为的 100vh === 视口高度 实际上 100vh === 视口高度 + 浏览器工具栏（地址栏等等）的高度
 vhCheck('browser-address-bar');
+//注册全局的自定义指令
+for (let iterator in directiveList) {
+  Vue.directive(iterator,directiveList[iterator]);
+}
 Vue.use(antd)
-// router.beforeEach(() => {
-//   NProgress.start();
-// });
-// router.afterEach(() => {
-//   NProgress.done();
-// });
+Vue.use(directiveList.LazyLoad.install)
 new Vue({
   router,
   render: h => h(App),
