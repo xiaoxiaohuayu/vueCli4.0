@@ -9,8 +9,8 @@
       <a-button v-permission="'10'">无权限</a-button>
     </div>
     <div v-for="(m,index) in list" :key="index">
-      <img :v-lazy ="m" />
-      <img :v-lazy ="m"  :src="m" />
+      <img :v-LazyLoad ="m" />
+      <img :lazy ="m"  />
     </div>
     <!-- <img v-LazyLoad="../" /> -->
 </div>

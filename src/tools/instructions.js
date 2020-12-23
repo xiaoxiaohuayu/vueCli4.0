@@ -44,12 +44,12 @@ const LazyLoad = {
     install(Vue, options) {
         console.log(options)
         // options.default = 'https://ww3.sinaimg.cn/bmiddle/005ZupIhly1ghxmrr4kzvj326o2z8x6q.jpg';
-    //   const defaultSrc = options && options.default;
-      const defaultSrc = 'https://ww3.sinaimg.cn/bmiddle/005ZupIhly1ghxmrr4kzvj326o2z8x6q.jpg';
+      const defaultSrc = options && options.default;
+    //   const defaultSrc = 'https://ww3.sinaimg.cn/bmiddle/005ZupIhly1ghxmrr4kzvj326o2z8x6q.jpg';
       Vue.directive('lazy', {
         bind(el, binding) {
           LazyLoad.init(el, binding.value, defaultSrc)
-        //   LazyLoad.init(el, binding.value)
+          LazyLoad.init(el, binding.value)
         },
         inserted(el) {
           if (IntersectionObserver) {
