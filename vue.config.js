@@ -56,6 +56,7 @@ module.exports = {
       .set("@views", resolve("src/views"))
       .set("@router", resolve("src/router"))
       .set("@store", resolve("src/store"))
+      .set("@httpGather", resolve("src/libs/httpGather.js"))
       // .set("@layouts", resolve("src/layouts"))
       // .set("@static", resolve("src/static"));
       //将svg进行组件化处理,现将组件库或者svg的文件引入进来，通过svg-sprite-loader插件来处理，
@@ -101,7 +102,7 @@ module.exports = {
   configureWebpack: {
     resolve: {
       alias: {
-        '@ant-design/icons/lib/dist$': path.resolve(__dirname, './src/tools/icons.js'),
+        // '@ant-design/icons/lib/dist$': path.resolve(__dirname, './src/tools/icons.js'),
       },
     },
       //开启gzip压缩
@@ -127,15 +128,21 @@ devServer: {
     // https: false,
     // hotOnly: false, // 热更新
     proxy: {
-      "/api": {
+      "/login": {
         target:
-          "https://www.easy-mock.com/mock/5bc75b55dc36971c160cad1b/sheets", // 目标代理接口地址
+          "http://dev.yimashuchi.com:85/", // 目标代理接口地址
         secure: false,
         changeOrigin: true, // 开启代理，在本地创建一个虚拟服务端
         // ws: true, // 是否启用websockets
-        pathRewrite: {
-          "^/api": "/"
-        }
+        // pathRewrite: {
+        //   "^/api": "/"
+        // }
+      },
+      "/info": {
+        target:
+          "http://dev.yimashuchi.com:85/", // 目标代理接口地址
+        secure: false,
+        changeOrigin: true, // 开启代理，在本地创建一个虚拟服务端
       }
     }
   },
