@@ -39,7 +39,7 @@
 
 <script>
 import { loginFun,infoFun } from '@httpGather'
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
@@ -58,10 +58,10 @@ function hasErrors(fieldsError) {
             });
 		},
 		computed: {
-
+            // ...mapState('user', ['status'])
 		},
 		methods: {
-            ...mapActions(['login']),
+            ...mapActions('user', ['login', 'logout']),
             userNameError() {
             const { getFieldError, isFieldTouched } = this.form;
             return isFieldTouched('account') && getFieldError('account');
@@ -75,14 +75,9 @@ function hasErrors(fieldsError) {
                 e.preventDefault();
                 this.form.validateFields((err, values) => {
                     if (!err) {
-                    console.log('账号密码', values);
-                        this.$store.dispatch('setLogin',{'account':'admin','password':'123456'}).then((res)=>{
-                            console.log(res)
-                        }).catch((error)=>{
-                            console.log(error)
-                        })
-                    // loginFun({'account':'admin','password':'123456'}).then((res)=>{
-                    // })
+                        console.log(this.$store)
+                        this.login({'username':'admin1', 'password':'123456' })
+                        console.log(this.$store.state,'登陆之后经过vuex之后的数据')
                     }
                 });
             },

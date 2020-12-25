@@ -22,7 +22,6 @@ for (let iterator in directiveList) {
   }
 }
 Vue.use(antd)
-// Vue.use(store)
 new Vue({
   router,
   store,

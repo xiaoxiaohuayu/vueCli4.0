@@ -48,8 +48,10 @@ request.interceptors.request.use(
     if (store.getters.token || storage._getStorage('token')) {
       config.headers['X-Token'] = getToken()
     }
+    // console.log(store.getters.token,storage._getStorage('token'))
     return config
   },
+  
   error => {
     console.log(error) // for debug
     return Promise.reject(error)
