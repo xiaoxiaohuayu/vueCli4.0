@@ -1,17 +1,17 @@
 import Vue from 'vue'
 import App from './App.vue'
 import antd from 'ant-design-vue'
-import VueRouter from 'vue-router'
+import './styles/main.scss'
 import 'regenerator-runtime/runtime';
 import NProgress from 'nprogress';
 import "@/icons/index.js";
 import directiveList  from "@/tools/instructions.js";
 // import { LazyLoad }  from "@/tools/instructions.js";
 import  router  from './router/index'
-import store from './store/index'
+import { store } from './store/index.js'
 import 'ant-design-vue/dist/antd.css'
 Vue.config.productionTip = false;
-
+// Vue.prototype.$store = store;
 import vhCheck from 'vh-check';
 //解决移动端浏览器100vh高度不一致你以为的 100vh === 视口高度 实际上 100vh === 视口高度 + 浏览器工具栏（地址栏等等）的高度
 vhCheck('browser-address-bar');

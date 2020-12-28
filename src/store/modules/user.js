@@ -1,30 +1,47 @@
 const { loginFun } = require("../../libs/httpGather")
+import router from '../../router/index.js';
+
 const state={};
 const mutations = {
     logout(state) {
-        state.status = {};
+        // state.status = {};
         state.token = null;
     },
     loginRequest(state, userinfo) {
         console.log(userinfo,'登陆之前的账号密码')
     },
     _token(state, token) {
-        state.status = true ;
+        // state.status = true ;
         state.token = token;
+    },
+    loginFailure(state,error) {
+        console.log(error,'error')
+        sessionStorage.removeItem('token');
+        state.user = false;
     },
 };
 const actions = {
-    // login({ dispatch,commit }, {username,password}){
-        login({ commit }, {username,password}){
+    login({ dispatch,commit }, {username,password}){
+        // login({ commit }, {username,password}){
+            // console.log(dispatch)
         commit('loginRequest',{ username, password})
-        loginFun({'account':'admin','password':'123456'}).then(response => {
+        let obj ={
+        'account':username,'password':password
+        }
+        loginFun(obj).then(response => {
             const result = response;
-            console.log('response',response)
-            // sessionStorage.setItem('token', result.token);
+            sessionStorage.setItem('token', result.token);
             commit('_token',result.token)
-        }).catch( error => {
+            console.log(router,'router')
+            router.push('/home').catch((e) => { 
+                console.log('e')
+             })
+        },error=>{
+            // console.log('loginFailure')
+            commit('loginFailure', error);
             // dispatch('alert/error', error, { root: true });
-            reject(error)
+        }).catch(()=>{
+            console.log('catch')
         })
     },
     logout({ commit }){
@@ -33,6 +50,7 @@ const actions = {
     }
 }
 export const user = {
+    namespaced: true,
     state,
     actions,
     mutations

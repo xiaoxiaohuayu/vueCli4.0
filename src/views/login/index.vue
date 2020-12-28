@@ -58,7 +58,7 @@ function hasErrors(fieldsError) {
             });
 		},
 		computed: {
-            // ...mapState('user', ['status'])
+            ...mapState('alert', ['status'])
 		},
 		methods: {
             ...mapActions('user', ['login', 'logout']),
@@ -75,9 +75,9 @@ function hasErrors(fieldsError) {
                 e.preventDefault();
                 this.form.validateFields((err, values) => {
                     if (!err) {
-                        console.log(this.$store)
-                        this.login({'username':'admin1', 'password':'123456' })
-                        console.log(this.$store.state,'登陆之后经过vuex之后的数据')
+                        console.log(values)
+                        this.login({'username':values.account, 'password':values.password })
+                        // console.log(this.$store.state,'登陆之后经过vuex之后的数据')
                     }
                 });
             },

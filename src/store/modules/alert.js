@@ -1,3 +1,5 @@
+import { message as Message } from 'ant-design-vue'
+
 const state = {
     type: null,
     message: null
@@ -5,17 +7,23 @@ const state = {
 
 const actions = {
     error({ commit }, message) {
-        commit('error', message = '登陆失败');
+        commit('error', message);
     },
 };
 
 const mutations = {
-    error(state, message) {
-        state.message = message;
+    error(state, mes) {
+        console.log(state, mes,'state, message')
+        state.mes = mes || '登陆超时';
+        Message.error({
+            message: mes,
+            duration: 3
+        })
     },
 };
 
 export const alert = {
+    namespaced: true,
     state,
     actions,
     mutations

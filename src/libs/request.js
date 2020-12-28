@@ -3,7 +3,8 @@ import qs from 'qs';
 import { message } from 'ant-design-vue'
 import get from 'lodash/get';
 import storage from './storage';
-import store from '@/store'
+import { store } from '@/store'
+import { router }from '@/router/index'
 
 // 创建 axios 实例
 const request = axios.create({
@@ -13,6 +14,7 @@ const request = axios.create({
 });
 // 异常拦截处理器
 const errorHandler = (error,status) => {
+  status = status ? status: 408
  switch (status) {
    /* eslint-disable no-param-reassign */
    case 400: error.content = '请求错误'; break;
@@ -32,23 +34,15 @@ const errorHandler = (error,status) => {
  return error.content;
 };
 
-// request interceptor
-// request.interceptors.request.use((config) => {
-//  // 如果 token 存在
-//  // 让每个请求携带自定义 token 请根据实际情况自行修改
-//  // eslint-disable-next-line no-param-reassign
-//  console.log(config,'config')
-//  config.data=qs.stringify(config.data);
-//  config.headers.Authorization = `bearer ${storage._getStorage('ACCESS_TOKEN')}`;
-//  return config;
-// }, errorHandler);
 /**----------------------------------*/
+// 请求拦截
 request.interceptors.request.use(
   config => {
-    if (store.getters.token || storage._getStorage('token')) {
-      config.headers['X-Token'] = getToken()
+    if (sessionStorage.getItem('token') || store.state.user && store.state.user.token) {
+      config.headers['Authorization'] = sessionStorage.getItem('token') || store.state.user && store.state.user.token
+    }else{
+      // router.push('/')
     }
-    // console.log(store.getters.token,storage._getStorage('token'))
     return config
   },
   
@@ -58,37 +52,13 @@ request.interceptors.request.use(
   }
 )
 /**----------------------------------*/
-// response interceptor
-// request.interceptors.response.use((response) => {
-//  const dataAxios = response.data;
-//  // 这个状态码是和后端约定的
-//  const { code } = dataAxios;
-//  // 根据 code 进行判断
-//  if (code === undefined) {
-//    // 如果没有 code 代表这不是项目后端开发的接口
-//    return dataAxios;
-//  // eslint-disable-next-line no-else-return
-//  } else {
-//    // 有 code 代表这是一个后端接口 可以进行进一步的判断
-//    switch (code) {
-//      case 200:
-//        // [ 示例 ] code === 200 代表没有错误
-//        return dataAxios.data;
-//      case 'xxx':
-//        // [ 示例 ] 其它和后台约定的 code
-//        return 'xxx';
-//      default:
-//        // 不是正确的 code
-//        return '不是正确的code';
-//    }
-//  }
-// }, errorHandler);
 /**------------------------------- */
+//响应拦截
 request.interceptors.response.use(
   response => {
     const res = response.data
     if (res.status !== 200) {
-      // console.log(res,res.message)
+      console.log(res,'@@@@@@@@@@',res.message)
       message.error({
         content: res.message || errorHandler(message,res.status),
         duration: 3
@@ -99,10 +69,9 @@ request.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error) // for debug
     message.error({
-      message: error.message || errorHandler(message,res.status),
-      duration: 3
+      content:errorHandler(message,408),
+      duration: 3,
     })
     return Promise.reject(error)
   }

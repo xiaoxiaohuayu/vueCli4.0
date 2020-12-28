@@ -150,10 +150,7 @@ devServer: {
     css:{
         loaderOptions:{
             sass:{
-                prependData:`
-                @import '@/styles/variable.scss'
-                @import '@/styles/minxins.scss'
-                `
+                data:`@import '@/styles/variable.scss';@import '@/styles/minxins.scss';@import '@/styles/main.scss'`
             }
         }
     }
