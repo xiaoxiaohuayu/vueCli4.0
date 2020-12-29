@@ -8,14 +8,15 @@ import Home from '../views/layout/index'
 
 Vue.use(VueRouter)
 
+
 const routes = [
   {
-    path:'/',
+    path:'/login',
     name:'login',
     component:()=>import('../views/login')
   },
   {
-    path: '/home',
+    path: '/',
     name: 'Home',
     component: Home,
     children:[
@@ -43,5 +44,28 @@ const router = new VueRouter({
 //   base: process.env.BASE_URL,
   routes
 })
-
+router.beforeEach((to,from,next)=> {
+  console.log(to,from)
+  if(to.name !=='login'){
+    if(sessionStorage.getItem('token')){
+      next()
+    }else{
+      router.push({
+        path:'/login'
+      })
+    }
+  }else{
+    if(sessionStorage.getItem('token')){
+      router.push({
+        path:'/'
+      })
+    }else{
+      next()
+    }
+  }
+})
+const routerPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return routerPush.call(this, location).catch(error=> error)
+}
 export default router

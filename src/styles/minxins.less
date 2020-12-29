@@ -1,7 +1,7 @@
-@mixin vh($height: 100vh) {
-    height: $height;
-    height: calc(#{$height} - var(--browser-address-bar, 0px));
-  }
-  @import '~ant-design-vue/dist/antd.less';
+// @mixin vh(@height: 100vh) {
+//     height: @height;
+//     height: calc(~"@{@height} - var(--browser-address-bar, 0px)");
+//   };
+// @import '~ant-design-vue/dist/antd.less';
 //   引入这个less文件会导致打包后增加500kb的大小，好处是可以覆盖变量修改class
 //  当然你可以修改按需进行css的样式加载，但是覆盖不了样式了 参考地址 https://juejin.cn/post/6901466994478940168#heading-16

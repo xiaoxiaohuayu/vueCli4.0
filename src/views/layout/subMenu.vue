@@ -67,36 +67,37 @@ export default {
   data() {
     return {
       collapsed: false,
-          list: [
-              {
-                  key:'1',
-                  title:'一级',
-                  path:'/',
-                  svg:'mail'
-              },
-              {
-                    key: '2',
-                    title: '二级',
-                    path:'/home',
-                    svg:'desktop',
-                    children: [
-                    {
-                        key: '2.1',
-                        title: '三级',
-                        path:'/about',
-                        svg:'euro',
-                        children: [
-                            { 
-                                key: '2.1.1',
-                                title: '四级' ,
-                                path:'/home',
-                                svg:'coffee'
-                            }
-                        ],
-                    },
-                    ],
-              }
-          ],
+      list:[],
+          // list: [
+          //     {
+          //         key:'1',
+          //         title:'一级',
+          //         path:'/',
+          //         svg:'mail'
+          //     },
+          //     {
+          //           key: '2',
+          //           title: '二级',
+          //           path:'/home',
+          //           svg:'desktop',
+          //           children: [
+          //           {
+          //               key: '2.1',
+          //               title: '三级',
+          //               path:'/about',
+          //               svg:'euro',
+          //               children: [
+          //                   { 
+          //                       key: '2.1.1',
+          //                       title: '四级' ,
+          //                       path:'/404',
+          //                       svg:'coffee'
+          //                   }
+          //               ],
+          //           },
+          //           ],
+          //     }
+          // ],
     };
   },
   methods: {

@@ -14,11 +14,6 @@ const actions = {
 const mutations = {
     error(state, mes) {
         console.log(state, mes,'state, message')
-        state.mes = mes || '登陆超时';
-        Message.error({
-            message: mes,
-            duration: 3
-        })
     },
 };
 

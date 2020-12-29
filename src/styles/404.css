@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Libre+Franklin");
 .body {
     margin: 0;
-    height:calc(100vh - 170px);
+    height:calc(100vh - 206px);
     overflow: hidden;
     position: relative;
     font-family: "Libre Franklin", sans-serif;

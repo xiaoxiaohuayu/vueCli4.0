@@ -8,3 +8,7 @@ export const loginFun = (param) => {
 export const infoFun = (data) => {
     return Methods.get(Url.info,data)
 }
+//退出登陆
+export const logoutFun = (param) => {
+    return Methods.post(Url.logout,param,true)
+}

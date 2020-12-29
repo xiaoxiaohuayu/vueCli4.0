@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import antd from 'ant-design-vue'
-import './styles/main.scss'
+import './styles/main.less'
 import 'regenerator-runtime/runtime';
 import NProgress from 'nprogress';
 import "@/icons/index.js";
